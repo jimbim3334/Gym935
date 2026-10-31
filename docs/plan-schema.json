@@ -1,0 +1,863 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "oneOf": [
+    {
+      "type": "object",
+      "properties": {
+        "format_version": {
+          "type": "number",
+          "const": 1
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "goal": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "duration_weeks": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 52
+        },
+        "days_per_week": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 7
+        },
+        "notes": {
+          "type": "string"
+        },
+        "created_by": {
+          "description": "z. B. Name der KI.",
+          "type": "string"
+        },
+        "type": {
+          "type": "string",
+          "const": "strength"
+        },
+        "exercise_definitions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ExerciseDefinition"
+          }
+        },
+        "weeks": {
+          "minItems": 1,
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "week": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 52
+              },
+              "label": {
+                "description": "z. B. \"Deload\", \"Intensität hoch\".",
+                "type": "string"
+              },
+              "notes": {
+                "type": "string"
+              },
+              "deload": {
+                "default": false,
+                "type": "boolean"
+              },
+              "days": {
+                "minItems": 1,
+                "maxItems": 7,
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "key": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 40,
+                      "description": "Stabiler Schlüssel des Tages, in jeder Woche gleich (z. B. \"upper-a\")."
+                    },
+                    "name": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 60
+                    },
+                    "notes": {
+                      "type": "string"
+                    },
+                    "items": {
+                      "minItems": 1,
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/$defs/ExerciseItem"
+                      }
+                    }
+                  },
+                  "required": [
+                    "key",
+                    "name",
+                    "items"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            },
+            "required": [
+              "week",
+              "days"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": [
+        "format_version",
+        "name",
+        "duration_weeks",
+        "days_per_week",
+        "type",
+        "weeks"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "format_version": {
+          "type": "number",
+          "const": 1
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "goal": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "duration_weeks": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 52
+        },
+        "days_per_week": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 7
+        },
+        "notes": {
+          "type": "string"
+        },
+        "created_by": {
+          "description": "z. B. Name der KI.",
+          "type": "string"
+        },
+        "type": {
+          "type": "string",
+          "const": "cardio"
+        },
+        "weeks": {
+          "minItems": 1,
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "week": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 52
+              },
+              "label": {
+                "description": "z. B. \"Deload\", \"Intensität hoch\".",
+                "type": "string"
+              },
+              "notes": {
+                "type": "string"
+              },
+              "deload": {
+                "default": false,
+                "type": "boolean"
+              },
+              "days": {
+                "minItems": 1,
+                "maxItems": 7,
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "key": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 40,
+                      "description": "Stabiler Schlüssel des Tages, in jeder Woche gleich (z. B. \"upper-a\")."
+                    },
+                    "name": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 60
+                    },
+                    "notes": {
+                      "type": "string"
+                    },
+                    "items": {
+                      "minItems": 1,
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/$defs/CardioItem"
+                      }
+                    }
+                  },
+                  "required": [
+                    "key",
+                    "name",
+                    "items"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            },
+            "required": [
+              "week",
+              "days"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": [
+        "format_version",
+        "name",
+        "duration_weeks",
+        "days_per_week",
+        "type",
+        "weeks"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "format_version": {
+          "type": "number",
+          "const": 1
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "goal": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "duration_weeks": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 52
+        },
+        "days_per_week": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 7
+        },
+        "notes": {
+          "type": "string"
+        },
+        "created_by": {
+          "description": "z. B. Name der KI.",
+          "type": "string"
+        },
+        "type": {
+          "type": "string",
+          "const": "rehab"
+        },
+        "exercise_definitions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ExerciseDefinition"
+          }
+        },
+        "weeks": {
+          "minItems": 1,
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "week": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 52
+              },
+              "label": {
+                "description": "z. B. \"Deload\", \"Intensität hoch\".",
+                "type": "string"
+              },
+              "notes": {
+                "type": "string"
+              },
+              "deload": {
+                "default": false,
+                "type": "boolean"
+              },
+              "days": {
+                "minItems": 1,
+                "maxItems": 7,
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "key": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 40,
+                      "description": "Stabiler Schlüssel des Tages, in jeder Woche gleich (z. B. \"upper-a\")."
+                    },
+                    "name": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 60
+                    },
+                    "notes": {
+                      "type": "string"
+                    },
+                    "items": {
+                      "minItems": 1,
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/$defs/ExerciseItem"
+                      }
+                    }
+                  },
+                  "required": [
+                    "key",
+                    "name",
+                    "items"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            },
+            "required": [
+              "week",
+              "days"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": [
+        "format_version",
+        "name",
+        "duration_weeks",
+        "days_per_week",
+        "type",
+        "weeks"
+      ],
+      "additionalProperties": false
+    }
+  ],
+  "title": "Trainingsplan",
+  "description": "Austauschformat für Trainingspläne, Version 1.",
+  "$defs": {
+    "ExerciseDefinition": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "primary_muscles": {
+          "minItems": 1,
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "chest",
+              "front_delts",
+              "side_delts",
+              "rear_delts",
+              "lats",
+              "upper_back",
+              "traps",
+              "lower_back",
+              "rotator_cuff",
+              "biceps",
+              "triceps",
+              "forearms",
+              "abs",
+              "obliques",
+              "hip_flexors",
+              "glutes",
+              "quads",
+              "hamstrings",
+              "adductors",
+              "abductors",
+              "calves",
+              "tibialis",
+              "neck"
+            ]
+          }
+        },
+        "secondary_muscles": {
+          "default": [],
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "chest",
+              "front_delts",
+              "side_delts",
+              "rear_delts",
+              "lats",
+              "upper_back",
+              "traps",
+              "lower_back",
+              "rotator_cuff",
+              "biceps",
+              "triceps",
+              "forearms",
+              "abs",
+              "obliques",
+              "hip_flexors",
+              "glutes",
+              "quads",
+              "hamstrings",
+              "adductors",
+              "abductors",
+              "calves",
+              "tibialis",
+              "neck"
+            ]
+          }
+        },
+        "equipment": {
+          "type": "string",
+          "enum": [
+            "barbell",
+            "dumbbell",
+            "machine",
+            "plate_machine",
+            "smith_machine",
+            "cable",
+            "bodyweight",
+            "kettlebell",
+            "band",
+            "ez_bar",
+            "trap_bar",
+            "other"
+          ]
+        },
+        "mechanic": {
+          "type": "string",
+          "enum": [
+            "compound",
+            "isolation"
+          ]
+        },
+        "load_increment_kg": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 20
+        },
+        "assisted": {
+          "type": "boolean"
+        },
+        "notes": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "primary_muscles",
+        "equipment",
+        "mechanic"
+      ],
+      "additionalProperties": false
+    },
+    "ExerciseItem": {
+      "type": "object",
+      "properties": {
+        "exercise": {
+          "description": "Übungsname, wird beim Import mit dem Katalog abgeglichen.",
+          "type": "string",
+          "minLength": 1
+        },
+        "exercise_id": {
+          "description": "Katalog-ID, falls bekannt.",
+          "type": "string",
+          "minLength": 1
+        },
+        "superset": {
+          "description": "Gleiches Label = Supersatz (z. B. \"A\").",
+          "type": "string",
+          "minLength": 1
+        },
+        "per_side": {
+          "description": "Pro Seite (links/rechts) getrennt.",
+          "type": "boolean"
+        },
+        "rest_seconds": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1800,
+          "description": "Pause nach dem Satz in Sekunden."
+        },
+        "tempo": {
+          "description": "z. B. \"3-1-1-0\".",
+          "type": "string"
+        },
+        "notes": {
+          "type": "string"
+        },
+        "sets": {
+          "minItems": 1,
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/SetGroup"
+          }
+        }
+      },
+      "required": [
+        "sets"
+      ],
+      "additionalProperties": false
+    },
+    "SetGroup": {
+      "type": "object",
+      "properties": {
+        "count": {
+          "default": 1,
+          "description": "Anzahl gleicher Sätze.",
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 20
+        },
+        "type": {
+          "default": "working",
+          "type": "string",
+          "enum": [
+            "warmup",
+            "working",
+            "top",
+            "backoff"
+          ]
+        },
+        "reps": {
+          "$ref": "#/$defs/Reps"
+        },
+        "hold_seconds": {
+          "description": "Haltezeit statt Wiederholungen.",
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 900
+        },
+        "rir": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 10
+            },
+            {
+              "type": "string",
+              "pattern": "^\\d{1,2}(\\.\\d)?\\s*[-–]\\s*\\d{1,2}(\\.\\d)?$"
+            }
+          ]
+        },
+        "rpe": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": 1,
+              "maximum": 10
+            },
+            {
+              "type": "string",
+              "pattern": "^\\d{1,2}(\\.\\d)?\\s*[-–]\\s*\\d{1,2}(\\.\\d)?$"
+            }
+          ]
+        },
+        "load": {
+          "$ref": "#/$defs/Load"
+        },
+        "rest_seconds": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1800,
+          "description": "Pause nach dem Satz in Sekunden."
+        },
+        "notes": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "Reps": {
+      "anyOf": [
+        {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100
+        },
+        {
+          "type": "string",
+          "pattern": "^(\\d{1,3})(\\s*[-–]\\s*(\\d{1,3}))?$|^amrap$"
+        }
+      ],
+      "description": "Wiederholungen: Zahl (8), Bereich (\"6-8\") oder \"AMRAP\"."
+    },
+    "Load": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "kg"
+            },
+            "kg": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1000
+            }
+          },
+          "required": [
+            "type",
+            "kg"
+          ],
+          "additionalProperties": false,
+          "description": "Absolutes Gewicht in kg."
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "percent_1rm"
+            },
+            "percent": {
+              "type": "number",
+              "minimum": 1,
+              "maximum": 120
+            }
+          },
+          "required": [
+            "type",
+            "percent"
+          ],
+          "additionalProperties": false,
+          "description": "Prozent vom geschätzten 1RM (aus der Historie)."
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "relative"
+            },
+            "change_kg": {
+              "type": "number",
+              "minimum": -200,
+              "maximum": 200
+            },
+            "change_percent": {
+              "type": "number",
+              "minimum": -50,
+              "maximum": 50
+            },
+            "reference": {
+              "default": "last_week",
+              "type": "string",
+              "enum": [
+                "last_week",
+                "last_session"
+              ]
+            }
+          },
+          "required": [
+            "type"
+          ],
+          "additionalProperties": false,
+          "description": "Relativ zur tatsächlich gehobenen Last der Vorwoche bzw. letzten Einheit."
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "percent_top_set"
+            },
+            "percent": {
+              "type": "number",
+              "minimum": 1,
+              "maximum": 100
+            }
+          },
+          "required": [
+            "type",
+            "percent"
+          ],
+          "additionalProperties": false,
+          "description": "Prozent vom Top-Satz derselben Übung (für Back-off-Sätze)."
+        }
+      ],
+      "description": "Optionale Lastvorgabe. Ohne Angabe schlägt die App ein Gewicht vor."
+    },
+    "CardioItem": {
+      "type": "object",
+      "properties": {
+        "modality": {
+          "type": "string",
+          "enum": [
+            "run",
+            "bike",
+            "row",
+            "elliptical",
+            "swim",
+            "walk",
+            "stairs",
+            "ski_erg",
+            "other"
+          ]
+        },
+        "name": {
+          "type": "string"
+        },
+        "duration_min": {
+          "type": "number",
+          "minimum": 1,
+          "maximum": 600
+        },
+        "distance_km": {
+          "type": "number",
+          "minimum": 0.1,
+          "maximum": 500
+        },
+        "intensity": {
+          "$ref": "#/$defs/Intensity"
+        },
+        "warmup_min": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 120
+        },
+        "cooldown_min": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 120
+        },
+        "intervals": {
+          "minItems": 1,
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "repeats": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 50
+              },
+              "work": {
+                "$ref": "#/$defs/Segment"
+              },
+              "recover": {
+                "$ref": "#/$defs/Segment"
+              },
+              "notes": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "repeats",
+              "work"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "notes": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "modality"
+      ],
+      "additionalProperties": false
+    },
+    "Intensity": {
+      "type": "object",
+      "properties": {
+        "hr_zone": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 5
+        },
+        "hr_min": {
+          "type": "integer",
+          "minimum": 40,
+          "maximum": 230
+        },
+        "hr_max": {
+          "type": "integer",
+          "minimum": 40,
+          "maximum": 230
+        },
+        "rpe": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": 1,
+              "maximum": 10
+            },
+            {
+              "type": "string",
+              "pattern": "^\\d{1,2}(\\.\\d)?\\s*[-–]\\s*\\d{1,2}(\\.\\d)?$"
+            }
+          ]
+        },
+        "pace_per_km": {
+          "type": "string",
+          "pattern": "^\\d{1,2}:\\d{2}(\\s*[-–]\\s*\\d{1,2}:\\d{2})?$"
+        },
+        "watts": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 2000
+        },
+        "description": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "description": "Intensitätsvorgabe, mindestens ein Feld."
+    },
+    "Segment": {
+      "type": "object",
+      "properties": {
+        "duration_sec": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 36000
+        },
+        "distance_m": {
+          "type": "number",
+          "minimum": 1,
+          "maximum": 100000
+        },
+        "intensity": {
+          "$ref": "#/$defs/Intensity"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "$id": "https://training-app.local/plan-schema.json"
+}

@@ -1,0 +1,199 @@
+{
+  "format_version": 1,
+  "type": "strength",
+  "name": "Upper/Lower Beispielblock",
+  "goal": "Hypertrophie mit Kraftfokus bei den Grundübungen",
+  "description": "Zwei Trainingstage pro Woche, zwei Aufbauwochen und eine Deload-Woche.",
+  "duration_weeks": 3,
+  "days_per_week": 2,
+  "created_by": "Beispiel",
+  "exercise_definitions": [
+    {
+      "name": "Landmine Press",
+      "primary_muscles": ["front_delts", "chest"],
+      "secondary_muscles": ["triceps"],
+      "equipment": "barbell",
+      "mechanic": "compound"
+    }
+  ],
+  "weeks": [
+    {
+      "week": 1,
+      "label": "Einstieg",
+      "notes": "Technik sauber, RIR eher konservativ.",
+      "days": [
+        {
+          "key": "upper",
+          "name": "Oberkörper",
+          "items": [
+            {
+              "exercise": "Barbell Bench Press",
+              "rest_seconds": 180,
+              "notes": "Kurze Pause auf der Brust.",
+              "sets": [
+                { "type": "warmup", "count": 2, "reps": 5, "load": { "type": "percent_1rm", "percent": 50 }, "rest_seconds": 60 },
+                { "type": "top", "reps": "5-6", "rir": 2, "load": { "type": "kg", "kg": 90 } },
+                { "type": "backoff", "count": 2, "reps": "8-10", "rir": 2, "load": { "type": "percent_top_set", "percent": 85 } }
+              ]
+            },
+            {
+              "exercise": "Single Arm Dumbbell Row",
+              "per_side": true,
+              "rest_seconds": 120,
+              "sets": [{ "count": 3, "reps": "8-12", "rir": 2 }]
+            },
+            {
+              "exercise": "Dumbbell Lateral Raise",
+              "superset": "A",
+              "rest_seconds": 60,
+              "sets": [{ "count": 3, "reps": "12-15", "rir": 1 }]
+            },
+            {
+              "exercise": "Cable Triceps Pushdown",
+              "superset": "A",
+              "rest_seconds": 90,
+              "sets": [{ "count": 3, "reps": "10-15", "rir": 1 }]
+            }
+          ]
+        },
+        {
+          "key": "lower",
+          "name": "Unterkörper",
+          "items": [
+            {
+              "exercise": "Barbell Back Squat",
+              "rest_seconds": 180,
+              "sets": [
+                { "type": "warmup", "count": 2, "reps": 5 },
+                { "count": 3, "reps": "6-8", "rir": 2, "rpe": 8 }
+              ]
+            },
+            {
+              "exercise": "Romanian Deadlift",
+              "rest_seconds": 150,
+              "sets": [{ "count": 3, "reps": "8-10", "rir": 2 }]
+            },
+            {
+              "exercise": "Leg Extension",
+              "rest_seconds": 90,
+              "sets": [{ "count": 2, "reps": "12-15", "rir": 1 }]
+            },
+            {
+              "exercise": "Plank",
+              "sets": [{ "count": 2, "hold_seconds": 45 }]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "week": 2,
+      "label": "Intensität hoch",
+      "days": [
+        {
+          "key": "upper",
+          "name": "Oberkörper",
+          "items": [
+            {
+              "exercise": "Barbell Bench Press",
+              "rest_seconds": 180,
+              "sets": [
+                { "type": "warmup", "count": 2, "reps": 5, "load": { "type": "percent_1rm", "percent": 50 }, "rest_seconds": 60 },
+                { "type": "top", "reps": "5-6", "rir": 1, "load": { "type": "relative", "change_kg": 2.5 } },
+                { "type": "backoff", "count": 2, "reps": "8-10", "rir": 1, "load": { "type": "percent_top_set", "percent": 85 } }
+              ]
+            },
+            {
+              "exercise": "Single Arm Dumbbell Row",
+              "per_side": true,
+              "rest_seconds": 120,
+              "sets": [{ "count": 3, "reps": "8-12", "rir": 1 }]
+            },
+            {
+              "exercise": "Landmine Press",
+              "rest_seconds": 120,
+              "sets": [{ "count": 2, "reps": "8-12", "rir": 2 }]
+            },
+            {
+              "exercise": "Dumbbell Lateral Raise",
+              "superset": "A",
+              "rest_seconds": 60,
+              "sets": [{ "count": 4, "reps": "12-15", "rir": 0 }]
+            },
+            {
+              "exercise": "Cable Triceps Pushdown",
+              "superset": "A",
+              "rest_seconds": 90,
+              "sets": [{ "count": 3, "reps": "10-15", "rir": 0 }]
+            }
+          ]
+        },
+        {
+          "key": "lower",
+          "name": "Unterkörper",
+          "items": [
+            {
+              "exercise": "Barbell Back Squat",
+              "rest_seconds": 180,
+              "sets": [
+                { "type": "warmup", "count": 2, "reps": 5 },
+                { "count": 3, "reps": "6-8", "rir": 1 }
+              ]
+            },
+            {
+              "exercise": "Romanian Deadlift",
+              "rest_seconds": 150,
+              "sets": [{ "count": 3, "reps": "8-10", "rir": 1 }]
+            },
+            {
+              "exercise": "Leg Extension",
+              "rest_seconds": 90,
+              "sets": [{ "count": 3, "reps": "12-15", "rir": 0 }]
+            },
+            {
+              "exercise": "Plank",
+              "sets": [{ "count": 2, "hold_seconds": 60 }]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "week": 3,
+      "label": "Deload",
+      "notes": "Halbes Volumen, Gewichte etwa 10 % runter.",
+      "deload": true,
+      "days": [
+        {
+          "key": "upper",
+          "name": "Oberkörper",
+          "items": [
+            {
+              "exercise": "Barbell Bench Press",
+              "sets": [{ "count": 2, "reps": 6, "rir": 4, "load": { "type": "relative", "change_percent": -10 } }]
+            },
+            {
+              "exercise": "Single Arm Dumbbell Row",
+              "per_side": true,
+              "sets": [{ "count": 2, "reps": 10, "rir": 4 }]
+            }
+          ]
+        },
+        {
+          "key": "lower",
+          "name": "Unterkörper",
+          "items": [
+            {
+              "exercise": "Barbell Back Squat",
+              "sets": [{ "count": 2, "reps": 6, "rir": 4, "load": { "type": "relative", "change_percent": -10 } }]
+            },
+            {
+              "exercise": "Romanian Deadlift",
+              "sets": [{ "count": 2, "reps": 8, "rir": 4 }]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

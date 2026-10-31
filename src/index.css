@@ -1,0 +1,259 @@
+@import 'tailwindcss';
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-line: var(--line);
+  --color-track: var(--track);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-accent-fg: var(--accent-fg);
+  --color-accent-soft: var(--accent-soft);
+  --color-strength-hero: var(--strength-hero);
+  --color-strength-hero-fg: var(--strength-hero-fg);
+  --color-strength-hero-muted: var(--strength-hero-muted);
+  --color-strength-btn: var(--strength-btn);
+  --color-strength-btn-fg: var(--strength-btn-fg);
+  --color-strength-chip: var(--strength-chip);
+  --color-strength-soft: var(--strength-soft);
+  --color-strength-ink: var(--strength-ink);
+  --color-strength-ring: var(--strength-ring);
+  --color-cardio-hero: var(--cardio-hero);
+  --color-cardio-hero-fg: var(--cardio-hero-fg);
+  --color-cardio-hero-muted: var(--cardio-hero-muted);
+  --color-cardio-btn: var(--cardio-btn);
+  --color-cardio-btn-fg: var(--cardio-btn-fg);
+  --color-cardio-chip: var(--cardio-chip);
+  --color-cardio-soft: var(--cardio-soft);
+  --color-cardio-ink: var(--cardio-ink);
+  --color-cardio-ring: var(--cardio-ring);
+  --color-mobility-hero: var(--mobility-hero);
+  --color-mobility-hero-fg: var(--mobility-hero-fg);
+  --color-mobility-hero-muted: var(--mobility-hero-muted);
+  --color-mobility-btn: var(--mobility-btn);
+  --color-mobility-btn-fg: var(--mobility-btn-fg);
+  --color-mobility-chip: var(--mobility-chip);
+  --color-mobility-soft: var(--mobility-soft);
+  --color-mobility-ink: var(--mobility-ink);
+  --color-mobility-ring: var(--mobility-ring);
+  --color-danger: var(--danger);
+  --color-danger-soft: var(--danger-soft);
+  --color-warn: var(--warn);
+  --color-warn-soft: var(--warn-soft);
+  --font-sans: 'Manrope Variable', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  --font-mono: ui-monospace, 'SF Mono', Menlo, monospace;
+}
+
+/* Design direction "Weich": soft grey ground, white rounded surfaces, monochrome UI.
+   Color comes from the three training tabs. */
+:root {
+  color-scheme: light dark;
+  --bg: #f1f2f4;
+  --surface: #ffffff;
+  --surface-2: #e9eaee;
+  --line: #e1e2e6;
+  --track: #d6d7dc;
+  --fg: #16171a;
+  --muted: #5e616a;
+  --accent: #1c2124;
+  --accent-fg: #ffffff;
+  --accent-soft: #e3e5e6;
+  /* Per-tab colors. Strength rgb(28 33 36), Cardio #0093E7, Mobility #00F19F as given;
+     text on the bright ones is dark for contrast. "ink" is the text-safe shade on light surfaces. */
+  --strength-hero: #1c2124;
+  --strength-hero-fg: #ffffff;
+  --strength-hero-muted: #c3c6c8;
+  --strength-btn: #ffffff;
+  --strength-btn-fg: #1c2124;
+  --strength-chip: rgb(255 255 255 / 0.14);
+  --strength-soft: #e3e5e6;
+  --strength-ink: #1c2124;
+  --strength-ring: #1c2124;
+  --cardio-hero: #0093e7;
+  --cardio-hero-fg: #04121c;
+  --cardio-hero-muted: #06202f;
+  --cardio-btn: #04121c;
+  --cardio-btn-fg: #ffffff;
+  --cardio-chip: rgb(255 255 255 / 0.4);
+  --cardio-soft: #dcf0fc;
+  --cardio-ink: #006baa;
+  --cardio-ring: #0093e7;
+  --mobility-hero: #00f19f;
+  --mobility-hero-fg: #00261a;
+  --mobility-hero-muted: #0b3d2b;
+  --mobility-btn: #00261a;
+  --mobility-btn-fg: #00f19f;
+  --mobility-chip: rgb(255 255 255 / 0.5);
+  --mobility-soft: #d4fbeb;
+  --mobility-ink: #00845a;
+  --mobility-ring: #00a86f;
+  --danger: #b42318;
+  --danger-soft: #fbe4e1;
+  --warn: #855600;
+  --warn-soft: #fbf0d4;
+  --shadow: 0 1px 2px rgb(22 23 26 / 0.04), 0 8px 24px rgb(22 23 26 / 0.06);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #101113;
+    --surface: #1b1c20;
+    --surface-2: #25262c;
+    --line: #2a2b31;
+    --track: #2e2f36;
+    --fg: #f1f1f3;
+    --muted: #a0a2aa;
+    --accent: #e8ebed;
+    --accent-fg: #1c2124;
+    --accent-soft: #262b2e;
+    --strength-hero: #1c2124;
+    --strength-hero-fg: #ffffff;
+    --strength-hero-muted: #c3c6c8;
+    --strength-btn: #ffffff;
+    --strength-btn-fg: #1c2124;
+    --strength-chip: rgb(255 255 255 / 0.12);
+    --strength-soft: #262b2e;
+    --strength-ink: #e8ebed;
+    --strength-ring: #e8ebed;
+    --cardio-hero: #0093e7;
+    --cardio-hero-fg: #04121c;
+    --cardio-hero-muted: #06202f;
+    --cardio-btn: #04121c;
+    --cardio-btn-fg: #ffffff;
+    --cardio-chip: rgb(255 255 255 / 0.35);
+    --cardio-soft: #0b2a3d;
+    --cardio-ink: #4db8f5;
+    --cardio-ring: #0093e7;
+    --mobility-hero: #00f19f;
+    --mobility-hero-fg: #00261a;
+    --mobility-hero-muted: #0b3d2b;
+    --mobility-btn: #00261a;
+    --mobility-btn-fg: #00f19f;
+    --mobility-chip: rgb(255 255 255 / 0.45);
+    --mobility-soft: #0a3326;
+    --mobility-ink: #00f19f;
+    --mobility-ring: #00f19f;
+    --danger: #ff8a7a;
+    --danger-soft: #3d1a17;
+    --warn: #f0c24f;
+    --warn-soft: #3a3015;
+    --shadow: 0 1px 2px rgb(0 0 0 / 0.3), 0 8px 24px rgb(0 0 0 / 0.35);
+  }
+}
+
+html,
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+  overscroll-behavior-y: none;
+}
+
+body {
+  min-height: 100dvh;
+}
+
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+.pt-safe {
+  padding-top: env(safe-area-inset-top);
+}
+
+.pb-safe {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.shadow-soft {
+  box-shadow: var(--shadow);
+}
+
+.no-scrollbar {
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+details > summary::-webkit-details-marker {
+  display: none;
+}
+
+button,
+a,
+summary {
+  touch-action: manipulation;
+}
+
+/* Liquid glass: frosted bar plus a refractive "lens" that slides to the active tab. */
+:root {
+  --glass-bg: rgb(255 255 255 / 0.55);
+  --glass-border: rgb(255 255 255 / 0.75);
+  --glass-shadow: 0 10px 34px rgb(16 17 19 / 0.14), 0 2px 6px rgb(16 17 19 / 0.06);
+  --glass-inner: inset 0 1px 0 rgb(255 255 255 / 0.9), inset 0 -1px 0 rgb(16 17 19 / 0.05);
+  --lens-bg: rgb(255 255 255 / 0.7);
+  --lens-border: rgb(255 255 255 / 0.95);
+  --lens-shadow: 0 3px 12px rgb(16 17 19 / 0.12), inset 0 1px 1px rgb(255 255 255 / 1), inset 0 -2px 4px rgb(16 17 19 / 0.06);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --glass-bg: rgb(40 41 46 / 0.55);
+    --glass-border: rgb(255 255 255 / 0.12);
+    --glass-shadow: 0 10px 34px rgb(0 0 0 / 0.45), 0 2px 6px rgb(0 0 0 / 0.3);
+    --glass-inner: inset 0 1px 0 rgb(255 255 255 / 0.14), inset 0 -1px 0 rgb(0 0 0 / 0.2);
+    --lens-bg: rgb(255 255 255 / 0.14);
+    --lens-border: rgb(255 255 255 / 0.22);
+    --lens-shadow: 0 3px 12px rgb(0 0 0 / 0.35), inset 0 1px 1px rgb(255 255 255 / 0.25), inset 0 -2px 4px rgb(0 0 0 / 0.2);
+  }
+}
+
+.glass {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow), var(--glass-inner);
+  -webkit-backdrop-filter: blur(22px) saturate(190%);
+  backdrop-filter: blur(22px) saturate(190%);
+}
+
+.glass-lens {
+  position: relative;
+  background: var(--lens-bg);
+  border: 1px solid var(--lens-border);
+  box-shadow: var(--lens-shadow);
+  -webkit-backdrop-filter: blur(4px) saturate(220%) brightness(1.06);
+  backdrop-filter: blur(4px) saturate(220%) brightness(1.06);
+}
+
+/* Specular highlight on the lens. */
+.glass-lens::before {
+  content: '';
+  position: absolute;
+  inset: 1px;
+  border-radius: inherit;
+  background: radial-gradient(120% 70% at 30% 0%, rgb(255 255 255 / 0.55), transparent 60%);
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+@keyframes lens-squish {
+  0% { transform: scale(1, 1); }
+  30% { transform: scale(1.16, 0.88); }
+  60% { transform: scale(0.97, 1.04); }
+  100% { transform: scale(1, 1); }
+}
+
+.lens-squish {
+  animation: lens-squish 0.5s cubic-bezier(0.3, 0.7, 0.4, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lens-squish {
+    animation: none;
+  }
+}

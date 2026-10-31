@@ -1,0 +1,81 @@
+{
+  "format_version": 1,
+  "type": "cardio",
+  "name": "Grundlagenausdauer Beispiel",
+  "goal": "Aerobe Basis aufbauen, ein Intervalltag pro Woche",
+  "duration_weeks": 2,
+  "days_per_week": 2,
+  "weeks": [
+    {
+      "week": 1,
+      "days": [
+        {
+          "key": "easy",
+          "name": "Locker",
+          "items": [
+            {
+              "modality": "run",
+              "name": "Dauerlauf",
+              "duration_min": 35,
+              "intensity": { "hr_zone": 2, "pace_per_km": "6:15-6:45" }
+            }
+          ]
+        },
+        {
+          "key": "intervals",
+          "name": "Intervalle",
+          "items": [
+            {
+              "modality": "bike",
+              "warmup_min": 10,
+              "intervals": [
+                {
+                  "repeats": 5,
+                  "work": { "duration_sec": 180, "intensity": { "hr_zone": 4, "rpe": 8 } },
+                  "recover": { "duration_sec": 120, "intensity": { "hr_zone": 1 } }
+                }
+              ],
+              "cooldown_min": 5
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "week": 2,
+      "days": [
+        {
+          "key": "easy",
+          "name": "Locker",
+          "items": [
+            {
+              "modality": "run",
+              "name": "Dauerlauf",
+              "duration_min": 40,
+              "distance_km": 6,
+              "intensity": { "hr_zone": 2 }
+            }
+          ]
+        },
+        {
+          "key": "intervals",
+          "name": "Intervalle",
+          "items": [
+            {
+              "modality": "row",
+              "warmup_min": 10,
+              "intervals": [
+                {
+                  "repeats": 6,
+                  "work": { "distance_m": 500, "intensity": { "rpe": "8-9" } },
+                  "recover": { "duration_sec": 90 }
+                }
+              ],
+              "cooldown_min": 5
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
