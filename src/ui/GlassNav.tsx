@@ -54,6 +54,9 @@ export function GlassNav() {
     if (target !== active) navigate(TABS[target].href)
   }
 
+  // The workout screen is full screen; it has its own way back.
+  if (location.startsWith('/training/')) return null
+
   const lensPos = dragPos ?? (active >= 0 ? active : null)
   const hovered = dragPos !== null ? Math.round(dragPos) : active
 

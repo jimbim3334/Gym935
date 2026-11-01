@@ -29,6 +29,8 @@ npm run icons    # PWA-Icons aus public/favicon.svg erzeugen
 | `src/db/` | Dexie-Schema, Seed, Schreibzugriffe mit `updated_at` und Sync-Queue |
 | `src/catalog/` | Muskeln, Equipment, Startkatalog (~125 Übungen, englisch mit deutschen Aliasen) |
 | `src/backup/` | Export/Import als JSON, Zusammenführen nach Last-Write-Wins |
+| `src/session/` | Training starten/beenden, Sätze loggen, Wochenfortschritt, Pausentimer |
+| `src/progress/` | Gewichtsempfehlung (Hybrid-Progression, e1RM, Anpassung nach RIR) |
 | `src/screens/`, `src/ui/` | Oberfläche |
 
 ## Datenmodell
@@ -39,7 +41,7 @@ und Zielwerte als Snapshot.
 
 - `exercises`, `exercise_aliases`: Katalog und gemerkte Namenszuordnungen
 - `plans`: importierte Pläne (`type` = strength/cardio/rehab, `version`, `is_active`, `current_week`, `data`)
-- `sessions`, `session_items`, `set_logs`: geloggte Trainings (ab Phase 2)
+- `sessions`, `session_items`, `set_logs`: geloggte Trainings. Jede Übung speichert die Planvorgabe als Kopie, damit spätere Re-Importe den Verlauf nicht verändern.
 - `sync_queue`: lokale Änderungen, die noch hochgeladen werden müssen (ab Phase 5)
 
 ## Deployment (Vercel)

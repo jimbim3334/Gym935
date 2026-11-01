@@ -10,9 +10,9 @@ import {
 } from '../plan/format.ts'
 import { dayMeta, groupSupersets, type DayData } from '../plan/days.ts'
 import type { CardioItemData, ExerciseItemData, PlanData, WeekData } from '../plan/schema.ts'
-import { IconChevron } from './icons.tsx'
+import { IconCheck, IconChevron, IconPlay } from './icons.tsx'
 import { cx, TYPE_STYLES } from './style.ts'
-import { Badge, Pill } from './ui.tsx'
+import { Badge, Button, Pill } from './ui.tsx'
 
 type NameFor = (item: ExerciseItemData) => string
 type Day = DayData
@@ -144,23 +144,42 @@ export function DayCard({
   index,
   nameFor = defaultName,
   defaultOpen = false,
+  done = false,
+  onStart,
 }: {
   plan: PlanData
   day: Day
   index: number
   nameFor?: NameFor
   defaultOpen?: boolean
+  /** Already trained in this week. */
+  done?: boolean
+  /** Shows a start button inside the card. */
+  onStart?: () => void
 }) {
+  const style = TYPE_STYLES[plan.type]
   return (
     <details open={defaultOpen} className="group mb-2 rounded-[22px] bg-surface">
       <summary className="flex min-h-16 cursor-pointer list-none items-center gap-3 px-3.5 py-3">
-        <Badge>{index + 1}</Badge>
+        <Badge className={done ? `${style.soft} ${style.text}` : undefined}>
+          {done ? <IconCheck size={18} strokeWidth={2.6} /> : index + 1}
+        </Badge>
         <div className="min-w-0 flex-1">
           <div className="truncate font-bold">{day.name}</div>
-          <div className="truncate text-sm font-medium text-muted">{dayMeta(plan, day)}</div>
+          <div className="truncate text-sm font-medium text-muted">
+            {done ? 'Erledigt · ' : ''}
+            {dayMeta(plan, day)}
+          </div>
         </div>
         <IconChevron size={18} className="text-muted transition group-open:rotate-90" />
       </summary>
+      {onStart && (
+        <div className="px-3.5 pb-1">
+          <Button size="sm" variant="secondary" onClick={onStart}>
+            <IconPlay size={14} /> {done ? 'Nochmal trainieren' : 'Diesen Tag starten'}
+          </Button>
+        </div>
+      )}
       <DayDetails plan={plan} day={day} nameFor={nameFor} />
     </details>
   )

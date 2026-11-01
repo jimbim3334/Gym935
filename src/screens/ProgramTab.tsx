@@ -1,12 +1,14 @@
 import { useLiveQuery } from 'dexie-react-hooks'
 import { useState, type ReactNode } from 'react'
-import { Link } from 'wouter'
+import { Link, useLocation } from 'wouter'
 import { db } from '../db/db.ts'
-import { putRows } from '../db/mutate.ts'
+import { alive, putRows } from '../db/mutate.ts'
+import type { Plan } from '../db/types.ts'
 import { PLAN_TYPE_LABELS } from '../plan/prompt.ts'
 import type { PlanType } from '../plan/schema.ts'
-import { IconBottle, IconImport, IconKettlebell, IconMobility, IconSparkle } from '../ui/icons.tsx'
-import { dayMeta } from '../plan/days.ts'
+import { IconBottle, IconImport, IconKettlebell, IconMobility, IconPlay, IconSparkle } from '../ui/icons.tsx'
+import { dayMeta, type DayData } from '../plan/days.ts'
+import { startSession, weekProgress } from '../session/session.ts'
 import { DayCard, ExerciseCards, WeekHeader, WeekPicker } from '../ui/PlanView.tsx'
 import { cx, formatToday, TYPE_STYLES } from '../ui/style.ts'
 import { Button, Page, ProgressRing, SectionTitle } from '../ui/ui.tsx'
@@ -23,18 +25,24 @@ const TYPE_ICON: Record<PlanType, (p: { size?: number; className?: string }) => 
   rehab: IconMobility,
 }
 
-const IconPlay = () => (
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-    <path d="M8 5.5v13l11-6.5z" />
-  </svg>
-)
+/** Logging exists for strength so far; cardio and mobility follow in phase 3. */
+const CAN_LOG: Record<PlanType, boolean> = { strength: true, cardio: false, rehab: false }
 
 export function ProgramTab({ type }: { type: PlanType }) {
   const plan = useLiveQuery(
     async () => (await db.plans.where('type').equals(type).toArray()).find((p) => p.is_active && !p.deleted_at) ?? null,
     [type],
   )
+  const sessions = useLiveQuery(
+    async () => (plan ? alive(await db.sessions.where('plan_id').equals(plan.id).toArray()) : []),
+    [plan?.id],
+  )
+  const running = useLiveQuery(
+    async () => (await db.sessions.filter((s) => !s.finished_at && !s.deleted_at && s.plan_type === type).toArray())[0] ?? null,
+    [type],
+  )
   const [selected, setSelected] = useState<{ planId: string; week: number } | null>(null)
+  const [, navigate] = useLocation()
   const style = TYPE_STYLES[type]
   const TypeIcon = TYPE_ICON[type]
 
@@ -67,12 +75,19 @@ export function ProgramTab({ type }: { type: PlanType }) {
   }
 
   const weeks = plan.data.weeks
-  const currentWeek = weeks.find((w) => w.week === plan.current_week) ?? weeks[0]
+  const progress = weekProgress(plan, sessions ?? [])
+  const currentWeek = progress.week
   const shownNumber = selected?.planId === plan.id ? selected.week : currentWeek.week
   const shownWeek = weeks.find((w) => w.week === shownNumber) ?? currentWeek
-  // Until sessions exist (phase 2) the next open day is the first day of the current week.
-  const doneDays = 0
-  const nextDay = currentWeek.days[doneDays] ?? currentWeek.days[0]
+  const doneDays = progress.done.size
+  const nextDay = progress.nextDay ?? currentWeek.days[currentWeek.days.length - 1]
+  const canLog = CAN_LOG[type]
+  const nextWeek = weeks.map((w) => w.week).sort((a, b) => a - b).find((w) => w > currentWeek.week)
+
+  const start = async (day: DayData, week = currentWeek.week) => {
+    if (running) return navigate(`/training/${running.id}`)
+    navigate(`/training/${await startSession(db, plan as Plan, week, day)}`)
+  }
 
   return (
     <Page
@@ -100,12 +115,61 @@ export function ProgramTab({ type }: { type: PlanType }) {
             <span className={cx('rounded-full px-3 py-1 text-xs font-bold', style.heroChip)}>Deload</span>
           )}
         </div>
-        <h2 className="relative mt-4 text-[28px] leading-tight font-extrabold tracking-tight">{nextDay.name}</h2>
-        <p className={cx('relative mt-0.5 text-sm font-bold', style.heroMuted)}>{dayMeta(plan.data, nextDay)}</p>
-        <Button variant="plain" size="lg" disabled className={cx('relative mt-5 w-full disabled:opacity-60', style.heroButton)}>
-          <IconPlay /> Training starten
-        </Button>
-        <p className={cx('relative mt-2 text-center text-xs font-bold', style.heroMuted)}>Loggen kommt in Phase 2</p>
+        {running ? (
+          <>
+            <h2 className="relative mt-4 text-[28px] leading-tight font-extrabold tracking-tight">{running.day_name}</h2>
+            <p className={cx('relative mt-0.5 text-sm font-bold', style.heroMuted)}>
+              Läuft seit {new Date(running.started_at).toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' })} Uhr
+            </p>
+            <Link href={`/training/${running.id}`}>
+              <Button variant="plain" size="lg" className={cx('relative mt-5 w-full', style.heroButton)}>
+                <IconPlay /> Training fortsetzen
+              </Button>
+            </Link>
+          </>
+        ) : progress.planComplete ? (
+          <>
+            <h2 className="relative mt-4 text-[28px] leading-tight font-extrabold tracking-tight">Plan abgeschlossen</h2>
+            <p className={cx('relative mt-0.5 text-sm font-bold', style.heroMuted)}>
+              Alle {plan.data.duration_weeks} Wochen erledigt. Zeit für den nächsten Block.
+            </p>
+            <Link href="/mehr/import">
+              <Button variant="plain" size="lg" className={cx('relative mt-5 w-full', style.heroButton)}>
+                <IconImport size={20} /> Neuen Plan importieren
+              </Button>
+            </Link>
+          </>
+        ) : progress.weekComplete ? (
+          <>
+            <h2 className="relative mt-4 text-[28px] leading-tight font-extrabold tracking-tight">Woche erledigt</h2>
+            <p className={cx('relative mt-0.5 text-sm font-bold', style.heroMuted)}>Alle Tage von Woche {currentWeek.week} sind geloggt.</p>
+            {nextWeek !== undefined && (
+              <Button
+                variant="plain"
+                size="lg"
+                className={cx('relative mt-5 w-full', style.heroButton)}
+                onClick={() => putRows(db, 'plans', [{ ...plan, current_week: nextWeek }])}
+              >
+                Weiter zu Woche {nextWeek}
+              </Button>
+            )}
+          </>
+        ) : (
+          <>
+            <h2 className="relative mt-4 text-[28px] leading-tight font-extrabold tracking-tight">{nextDay.name}</h2>
+            <p className={cx('relative mt-0.5 text-sm font-bold', style.heroMuted)}>{dayMeta(plan.data, nextDay)}</p>
+            <Button
+              variant="plain"
+              size="lg"
+              disabled={!canLog}
+              onClick={() => start(nextDay)}
+              className={cx('relative mt-5 w-full disabled:opacity-60', style.heroButton)}
+            >
+              <IconPlay /> Training starten
+            </Button>
+            {!canLog && <p className={cx('relative mt-2 text-center text-xs font-bold', style.heroMuted)}>Loggen kommt in Phase 3</p>}
+          </>
+        )}
       </section>
 
       <SectionTitle>{type === 'cardio' ? 'Einheiten' : 'Übungen'}</SectionTitle>
@@ -132,9 +196,19 @@ export function ProgramTab({ type }: { type: PlanType }) {
         )}
       </div>
       <WeekHeader week={shownWeek} />
-      {shownWeek.days.map((d, i) => (
-        <DayCard key={`${shownWeek.week}-${d.key}`} plan={plan.data} day={d} index={i} />
-      ))}
+      {shownWeek.days.map((d, i) => {
+        const isCurrent = shownWeek.week === currentWeek.week
+        return (
+          <DayCard
+            key={`${shownWeek.week}-${d.key}`}
+            plan={plan.data}
+            day={d}
+            index={i}
+            done={isCurrent && progress.done.has(d.key)}
+            onStart={canLog && !running && isCurrent ? () => start(d) : undefined}
+          />
+        )
+      })}
     </Page>
   )
 }

@@ -111,6 +111,48 @@ export const IconAlert = (p: IconProps) => (
   </Icon>
 )
 
+export const IconChevronDown = (p: IconProps) => (
+  <Icon {...p}>
+    <path d="M6 9l6 6 6-6" />
+  </Icon>
+)
+
+export const IconSwap = (p: IconProps) => (
+  <Icon {...p}>
+    <path d="M7 4L4 7l3 3M4 7h12M17 20l3-3-3-3M20 17H8" />
+  </Icon>
+)
+
+export const IconPlus = (p: IconProps) => (
+  <Icon {...p}>
+    <path d="M12 5v14M5 12h14" />
+  </Icon>
+)
+
+export const IconMinus = (p: IconProps) => (
+  <Icon {...p}>
+    <path d="M5 12h14" />
+  </Icon>
+)
+
+export const IconClose = (p: IconProps) => (
+  <Icon {...p}>
+    <path d="M6 6l12 12M18 6L6 18" />
+  </Icon>
+)
+
+export const IconTrend = (p: IconProps) => (
+  <Icon {...p}>
+    <path d="M4 17l6-6 4 4 6-7M15 8h5v5" />
+  </Icon>
+)
+
+export const IconPlay = ({ size = 18 }: { size?: number }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+    <path d="M8 5.5v13l11-6.5z" />
+  </svg>
+)
+
 /* Filled glyphs for the three training tabs (kettlebell, bottle, stretching figure).
    Single color via currentColor; cut-outs use a mask so they work on any background. */
 

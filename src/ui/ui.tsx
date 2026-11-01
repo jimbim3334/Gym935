@@ -1,6 +1,6 @@
-import type { ButtonHTMLAttributes, ReactNode } from 'react'
+import { useEffect, type ButtonHTMLAttributes, type ReactNode } from 'react'
 import { Link } from 'wouter'
-import { IconAlert, IconBack, IconChevron } from './icons.tsx'
+import { IconAlert, IconBack, IconChevron, IconClose } from './icons.tsx'
 import { cx } from './style.ts'
 
 export function Page({
@@ -236,3 +236,31 @@ export function ProgressRing({
 /** Shared look for text inputs and textareas. */
 export const fieldClass =
   'w-full rounded-[18px] bg-surface px-4 text-[15px] font-medium outline-none ring-accent/60 placeholder:text-muted/70 focus:ring-2'
+
+/** Bottom sheet over the current screen. Closes on backdrop tap and Escape. */
+export function Sheet({ title, onClose, children }: { title: string; onClose: () => void; children: ReactNode }) {
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && onClose()
+    window.addEventListener('keydown', onKey)
+    const overflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    return () => {
+      window.removeEventListener('keydown', onKey)
+      document.body.style.overflow = overflow
+    }
+  }, [onClose])
+  return (
+    <div className="fixed inset-0 z-50 flex items-end justify-center" role="dialog" aria-modal="true" aria-label={title}>
+      <div className="sheet-backdrop absolute inset-0 bg-black/40" onClick={onClose} />
+      <div className="sheet-panel pb-safe relative flex max-h-[88dvh] w-full max-w-2xl flex-col rounded-t-[28px] bg-bg">
+        <div className="flex items-center gap-3 px-5 pt-5 pb-2">
+          <h2 className="min-w-0 flex-1 truncate text-xl font-extrabold tracking-tight">{title}</h2>
+          <button onClick={onClose} aria-label="Schließen" className="grid size-10 place-items-center rounded-full bg-surface">
+            <IconClose size={18} />
+          </button>
+        </div>
+        <div className="overflow-y-auto overscroll-contain px-4 pt-2 pb-5">{children}</div>
+      </div>
+    </div>
+  )
+}

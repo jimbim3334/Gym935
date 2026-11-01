@@ -79,6 +79,8 @@ export interface SessionItem extends SyncFields {
   superset?: string | null
   /** Snapshot of the planned item, so history shows target vs. actual forever. */
   planned: unknown | null
+  /** Sets added during the workout on top of the plan. */
+  extra_sets?: number
   notes?: string
 }
 

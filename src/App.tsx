@@ -3,6 +3,7 @@ import { useRegisterSW } from 'virtual:pwa-register/react'
 import { ImportScreen } from './screens/ImportScreen.tsx'
 import { BackupScreen, CatalogScreen, HistoryScreen, MoreScreen, PlansScreen, PromptScreen } from './screens/MoreScreens.tsx'
 import { ProgramTab } from './screens/ProgramTab.tsx'
+import { WorkoutScreen } from './screens/WorkoutScreen.tsx'
 import { GlassNav } from './ui/GlassNav.tsx'
 import { Button } from './ui/ui.tsx'
 
@@ -54,6 +55,7 @@ export default function App() {
           <Route path="/reha">
             <Redirect to="/mobility" replace />
           </Route>
+          <Route path="/training/:id">{(params) => <WorkoutScreen key={params.id} id={params.id} />}</Route>
           <Route path="/verlauf" component={HistoryScreen} />
           <Route path="/mehr" component={MoreScreen} />
           <Route path="/mehr/import" component={ImportScreen} />
